@@ -41,7 +41,8 @@ def deal_response(response):
         #-----------------------------------------------------------------从myPageStrcture中的Init方法中拷贝过来的.
         content = ''
         for tl in fatherstructure_class.content:
-            fatherstructure_class.TL = len(tl)
+            tl=tl.replace(u' ', '').replace('\t', '').replace('\n', '')#7-13添加,去掉其中的非正文部分,因为台海网站中有一个页面就因为这个问题出现了bug
+            fatherstructure_class.TL += len(tl)#7-13日发现这里不是+=而是=
             content += tl
 
         content=content.replace('\r','').replace('\n','').replace('\t','')
@@ -153,7 +154,7 @@ def deal_response(response):
 
 
                 div_number += 1  # 这个div_number代表是的当前子节点下所有的子标签数量，前边的num表示的同一个标签的的出现次数
-                if thisclass2.name not in ['style','script']:
+                if thisclass2.name not in ['style','script','footer']:
                     getchild(j2, tag, xpath, num, thisclass2)
             except Exception as e:
                 pass

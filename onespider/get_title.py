@@ -58,6 +58,7 @@ def find_compare_list(title_str,webpage_class,maybe_content_list):
 
 def find_compare_title(title,webpage_class,maybe_content_list=[]):#这个这个maybe_content_list本来就是空的,函数内部会再次应用它,所以可以不用赋值
     maybe_content_list,title_str=find_compare_list(title_str=title,webpage_class=webpage_class,maybe_content_list=maybe_content_list)
+    xpath_list=[]#7-13日添加
     for one_content in maybe_content_list:
         if one_content.keys()[0] in title_str:
             index_in_for=title_str.index(one_content.keys()[0])
@@ -66,7 +67,19 @@ def find_compare_title(title,webpage_class,maybe_content_list=[]):#这个这个m
                 print 'find it ,------------------the title is (in find_compare_title)-------',one_content.keys()[0]
                 print 'the xpath is ',one_content.values()[0]
                 print index_in_for
-                return one_content
+                # return one_content#后来发现这里边的有问题,因为在文章内容中的也有和标题一样的句子,如网页http://m.taihainet.com/news/twnews/twdnsz/2006-04-05/173.html里边就有和标题一样的句子.
+            #所以这里设计成一个列表将里边所有的xpath比较一下,选长度最短的那一个,至少目前网站是可以解决的.
+                xpath_list.append(one_content)
+    #7-13处理xpath部分,选出长度最短的:
+    num=500#500是随便取的,目的是为了获得长度最小的xpath,一般xpaht的长度都不会大于500
+    target_xpath=''
+    while xpath_list:
+        xpath_in_while=xpath_list.pop()
+        if num>len(xpath_in_while.values()[0]):
+            num=len(xpath_in_while.values()[0])
+            target_xpath=xpath_in_while
+    return target_xpath
+
 #-----------------------------------------------------------------
 #解释,这里的执行流程是首先用dealcontent,吧数据先清理一遍,之后再用find_compare_list将里边的可能是标题的内容选出来,之后再将选出来的所有可能是集合
 #的元素全部用最后的find_compare_title这个函数来处理,找出其中匹配上的第一个元素,就是我要的目标

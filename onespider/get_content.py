@@ -2,6 +2,7 @@
 import pymongo
 from operator import itemgetter
 
+#这里边所有的调整都不会和机器学习模型结束后的结果一样.
 
 # client=pymongo.MongoClient('localhost',27017)#之前测试用的
 # thisCOL=client['xpath1']
@@ -37,16 +38,17 @@ def getxpath(response_list):
     print result_list_TL
 
     result_dict={}
-    for i in result_list_PN[0:10]:
-        if i['has_url']==0:
+    for i in result_list_PN[0:10]:#这个部分的功能还是有一个问题,因为这里变的流程是根据xpath出现的频率来统计的,里边有可能会出现错误情况:几个个长度都不是太长并且不是正文的xpath,但是出现的次数比较多,所以就会让这个出现频率特别高的
+        #成为主界面.
+        if i['has_url']==0 and i['TL']>1:#后来又发现有一个没有长度的变量突然冒了出来所以添加这一个功能
             keys1=result_dict.keys()
             if i['xpath'] in keys1:
                 result_dict[i['xpath']]+=1
             else:
                 result_dict[i['xpath']]=1
-    for i in result_list_TL[0:10]:
+    for i in result_list_TL[0:10]:#没有找到内容的网页是因为这个网页中的空格太多了,而标点符号几乎一个偶读没有,所以应该添加一个标点符和内容有关的变量来作为判断变量
         keys1=result_dict.keys()
-        if i['has_url']==0:
+        if i['has_url']==0 and i['TL']>1:
             if i['xpath'] in keys1:
                 result_dict[i['xpath']]+=1
                 # result_dict['xpath']=i['xpath']

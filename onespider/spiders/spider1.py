@@ -5,11 +5,15 @@ from onespider import get_content
 from onespider import get_title
 from onespider import get_content_block
 from onespider import get_image
-
+from onespider import get_publish_time
 
 class apider_finally_test(scrapy.Spider):
     name = 'spider_one'
-    start_urls=['http://finance.ifeng.com/a/20170712/15526107_0.shtml']
+    #http://m.taihainet.com/news/xmnews/shms/2006-04-09/281.html没抓到内容,因为空格太多
+    #http://m.taihainet.com/news/twnews/twdnsz/2006-04-05/173.html#没定位到主要的界面模块
+    #http://m.taihainet.com/news/twnews/twdnsz/2006-03-28/45.html改了之后还是没有抓到正文内容
+    #添加tl过滤功能后还有问题http://m.taihainet.com/news/txnews/gjnews/sh/2006-11-05/191.html
+    start_urls=['http://m.taihainet.com/news/txnews/gjnews/sh/2006-11-05/191.html']
 
     def parse(self, response):
         thisdict,thisclass=deal_response.deal_response(response)
@@ -29,3 +33,4 @@ class apider_finally_test(scrapy.Spider):
         content_block=response.xpath(content_block_xpath).extract()[0]
         image_list=get_image.get_image(content_block)
         print image_list
+        print get_publish_time.find_time(content_block)

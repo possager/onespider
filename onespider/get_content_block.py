@@ -5,10 +5,12 @@ def get_content_block(xpath_content,xpath_title):
     list_title=xpath_title.split('/')
     num=0
     xpath_content_list=[]
+    list_content.pop(0)
+    list_title.pop(0)#因为按照/划分过后,第一个为空,pop(index)是挤出第几个元素,所以一开始就把空的给挤掉
     while list_content:
-        this_div=list_content.pop(1)
+        this_div=list_content.pop(0)
         if list_title:
-            this_div2=list_title.pop(1)
+            this_div2=list_title.pop(0)
             if this_div2==this_div:
                 num+=1
                 xpath_content_list.append(this_div)
