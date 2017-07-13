@@ -5,7 +5,7 @@ from onespider import get_content
 from onespider import get_title
 from onespider import get_content_block
 from onespider import get_image
-
+from onespider import get_publish_time
 
 class apider_finally_test(scrapy.Spider):
     name = 'spider_one'
@@ -29,3 +29,4 @@ class apider_finally_test(scrapy.Spider):
         content_block=response.xpath(content_block_xpath).extract()[0]
         image_list=get_image.get_image(content_block)
         print image_list
+        print get_publish_time.find_time(content_block)
