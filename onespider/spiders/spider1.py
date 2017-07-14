@@ -9,7 +9,7 @@ from onespider import get_publish_time
 
 class apider_finally_test(scrapy.Spider):
     name = 'spider_one'
-    start_urls=['http://finance.ifeng.com/a/20170712/15526107_0.shtml']
+    start_urls=['http://m.thepaper.cn/newsDetail_forward_1731732']
 
     def parse(self, response):
         thisdict,thisclass=deal_response.deal_response(response)
