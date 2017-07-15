@@ -9,14 +9,21 @@ from onespider import get_publish_time
 
 class apider_finally_test(scrapy.Spider):
     name = 'spider_one'
-    start_urls=['http://m.thepaper.cn/newsDetail_forward_1731732']
+    urls=['http://news.xinhuanet.com/renshi/2017-07/15/c_1121323532.htm']
+
+    def start_requests(self):
+        for url in self.urls:
+            yield scrapy.Request(url=url,headers={
+                'Upgrade-Insecure-Requests':1,
+                'User-Agent':'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'
+            })
 
     def parse(self, response):
         thisdict,thisclass=deal_response.deal_response(response)
         xpath=get_content.getxpath(thisdict)
         title_return=get_title.get_title(thisclass)
         print xpath[0]
-        print title_return#title是一个只包含一个内容的的字典{title:xpath}
+        print title_return#title是一个只包含一个内容的的字典http://www.toutiao.com/a6442531519646368002/{title:xpath}
         title= title_return.keys()[0]
         title_xpath= title_return.values()[0]
         print title
